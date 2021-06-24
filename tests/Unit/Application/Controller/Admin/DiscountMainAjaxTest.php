@@ -52,7 +52,7 @@ class DiscountMainAjaxTest extends \OxidTestCase
 
         $oView = oxNew('discount_main_ajax');
         $sQuery = "from $sTable where $sTable.oxactive = '1'";
-        $this->assertEquals($sQuery, trim($oView->UNITgetQuery()));
+        $this->assertEquals($sQuery, trim($oView->_getQuery()));
     }
 
     /**
@@ -69,7 +69,7 @@ class DiscountMainAjaxTest extends \OxidTestCase
         $oView = oxNew('discount_main_ajax');
         $sQuery = "from oxobject2discount, $sTable where $sTable.oxid=oxobject2discount.oxobjectid";
         $sQuery .= " and oxobject2discount.oxdiscountid = '_testOxid' and oxobject2discount.oxtype = 'oxcountry'";
-        $this->assertEquals($sQuery, trim($oView->UNITgetQuery()));
+        $this->assertEquals($sQuery, trim($oView->_getQuery()));
     }
 
     /**
@@ -87,7 +87,7 @@ class DiscountMainAjaxTest extends \OxidTestCase
         $sQuery = "from $sTable where $sTable.oxactive = '1' and";
         $sQuery .= " $sTable.oxid not in ( select $sTable.oxid from oxobject2discount, $sTable where $sTable.oxid=oxobject2discount.oxobjectid";
         $sQuery .= " and oxobject2discount.oxdiscountid = '_testSynchoxid' and oxobject2discount.oxtype = 'oxcountry' )";
-        $this->assertEquals($sQuery, trim($oView->UNITgetQuery()));
+        $this->assertEquals($sQuery, trim($oView->_getQuery()));
     }
 
     /**

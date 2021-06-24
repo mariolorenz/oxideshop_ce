@@ -252,16 +252,16 @@ class CmpBasketTest extends \OxidTestCase
         $o = $this->getMock(\OxidEsales\Eshop\Application\Component\BasketComponent::class, array('getConfig'));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oCfg);
 
-        $this->assertEquals('cla?cnid=value:cnid:v&mnid=value:mnid:v&anid=value:anid:v&tpl=value:tpl:v&listtype=value:listtype:v&searchcnid=value:searchcnid:v&searchvendor=value:searchvendor:v&searchmanufacturer=value:searchmanufacturer:v&searchrecomm=value:searchrecomm:v&recommid=value:recommid:v&searchparam=search%26%26a&pgNr=123&', $o->UNITgetRedirectUrl());
+        $this->assertEquals('cla?cnid=value:cnid:v&mnid=value:mnid:v&anid=value:anid:v&tpl=value:tpl:v&listtype=value:listtype:v&searchcnid=value:searchcnid:v&searchvendor=value:searchvendor:v&searchmanufacturer=value:searchmanufacturer:v&searchrecomm=value:searchrecomm:v&recommid=value:recommid:v&searchparam=search%26%26a&pgNr=123&', $o->_getRedirectUrl());
 
         $this->setRequestParameter('cl', null);
         $this->setRequestParameter('pgNr', 'a123');
-        $this->assertEquals('start?cnid=value:cnid:v&mnid=value:mnid:v&anid=value:anid:v&tpl=value:tpl:v&listtype=value:listtype:v&searchcnid=value:searchcnid:v&searchvendor=value:searchvendor:v&searchmanufacturer=value:searchmanufacturer:v&searchrecomm=value:searchrecomm:v&recommid=value:recommid:v&searchparam=search%26%26a&', $o->UNITgetRedirectUrl());
+        $this->assertEquals('start?cnid=value:cnid:v&mnid=value:mnid:v&anid=value:anid:v&tpl=value:tpl:v&listtype=value:listtype:v&searchcnid=value:searchcnid:v&searchvendor=value:searchvendor:v&searchmanufacturer=value:searchmanufacturer:v&searchrecomm=value:searchrecomm:v&recommid=value:recommid:v&searchparam=search%26%26a&', $o->_getRedirectUrl());
 
         $this->assertEquals(null, oxRegistry::getSession()->getVariable('_backtoshop'));
 
         $this->setRequestParameter('pgNr', '0');
-        $this->assertEquals('basket?cnid=value:cnid:v&mnid=value:mnid:v&anid=value:anid:v&tpl=value:tpl:v&listtype=value:listtype:v&searchcnid=value:searchcnid:v&searchvendor=value:searchvendor:v&searchmanufacturer=value:searchmanufacturer:v&searchrecomm=value:searchrecomm:v&recommid=value:recommid:v&searchparam=search%26%26a&', $o->UNITgetRedirectUrl());
+        $this->assertEquals('basket?cnid=value:cnid:v&mnid=value:mnid:v&anid=value:anid:v&tpl=value:tpl:v&listtype=value:listtype:v&searchcnid=value:searchcnid:v&searchvendor=value:searchvendor:v&searchmanufacturer=value:searchmanufacturer:v&searchrecomm=value:searchrecomm:v&recommid=value:recommid:v&searchparam=search%26%26a&', $o->_getRedirectUrl());
         $this->assertEquals('start?cnid=value:cnid:v&mnid=value:mnid:v&anid=value:anid:v&tpl=value:tpl:v&listtype=value:listtype:v&searchcnid=value:searchcnid:v&searchvendor=value:searchvendor:v&searchmanufacturer=value:searchmanufacturer:v&searchrecomm=value:searchrecomm:v&recommid=value:recommid:v&searchparam=search%26%26a&', oxRegistry::getSession()->getVariable('_backtoshop'));
     }
 
@@ -279,14 +279,14 @@ class CmpBasketTest extends \OxidTestCase
             )
 
             ),
-            $o->UNITgetItems('abc', 10, 'sel', 'persparam', 'override')
+            $o->_getItems('abc', 10, 'sel', 'persparam', 'override')
         );
     }
 
     public function testGetItemsFromArgsEmpty()
     {
         $o = oxNew('oxcmp_basket');
-        $this->assertEquals(false, $o->UNITgetItems('', 10, 'sel', 'persparam', 'override'));
+        $this->assertEquals(false, $o->_getItems('', 10, 'sel', 'persparam', 'override'));
     }
 
     public function testGetItemsFromArgsRm()
@@ -317,7 +317,7 @@ class CmpBasketTest extends \OxidTestCase
                      'remove'       => 1,
                  )
             ),
-            $o->UNITgetItems('', 10, 'sel', 'persparam', 'override')
+            $o->_getItems('', 10, 'sel', 'persparam', 'override')
         );
     }
 
@@ -342,7 +342,7 @@ class CmpBasketTest extends \OxidTestCase
             )
 
             ),
-            $o->UNITgetItems()
+            $o->_getItems()
         );
 
         $this->setRequestParameter('persparam', 'b:persparam');
@@ -357,7 +357,7 @@ class CmpBasketTest extends \OxidTestCase
             )
 
             ),
-            $o->UNITgetItems(),
+            $o->_getItems(),
             '"Details" field in persparams is mandatory'
         );
     }
@@ -376,7 +376,7 @@ class CmpBasketTest extends \OxidTestCase
         $o = oxNew('oxcmp_basket');
         $this->assertEquals(
             array(),
-            $o->UNITgetItems()
+            $o->_getItems()
         );
     }
 
@@ -394,7 +394,7 @@ class CmpBasketTest extends \OxidTestCase
         $o = oxNew(\OxidEsales\Eshop\Application\Component\BasketComponent::class);
         $this->assertEquals(
             $oBasketItem,
-            $o->UNITaddItems(
+            $o->_addItems(
                 array(
                      array(
                          'aid'          => 'a_aid',
@@ -456,7 +456,7 @@ class CmpBasketTest extends \OxidTestCase
 
         $this->assertEquals(
             null,
-            $o->UNITaddItems(
+            $o->_addItems(
                 array(
                      array(),
                 )
@@ -499,7 +499,7 @@ class CmpBasketTest extends \OxidTestCase
 
         $this->assertEquals(
             null,
-            $o->UNITaddItems(
+            $o->_addItems(
                 array(
                      array(),
                 )
@@ -543,7 +543,7 @@ class CmpBasketTest extends \OxidTestCase
 
         $this->assertEquals(
             null,
-            $o->UNITaddItems(
+            $o->_addItems(
                 array(
                      array(),
                 )
@@ -575,7 +575,7 @@ class CmpBasketTest extends \OxidTestCase
 
         $this->assertEquals(
             null,
-            $o->UNITaddItems(
+            $o->_addItems(
                 array(
                      array(),
                 )
@@ -610,7 +610,7 @@ class CmpBasketTest extends \OxidTestCase
 
         $this->assertEquals(
             $oBasketItem,
-            $o->UNITaddItems(
+            $o->_addItems(
                 array(
                      array(
                          'aid'          => 'a_aid',
@@ -682,7 +682,7 @@ class CmpBasketTest extends \OxidTestCase
             'aArticles' => array('b_aid' => 15)
         );
         $o = oxNew('oxcmp_basket');
-        $this->assertSame(null, $o->UNITsetLastCall('sCallName', $aProductInfo, $aBasketInfo));
+        $this->assertSame(null, $o->_setLastCall('sCallName', $aProductInfo, $aBasketInfo));
         $this->assertEquals(array('sCallName' => $aProductInfo), oxRegistry::getSession()->getVariable('aLastcall'));
     }
 
@@ -789,8 +789,8 @@ class CmpBasketTest extends \OxidTestCase
     public function testSetGetLastCallFnc()
     {
         $o = oxNew('oxcmp_basket');
-        $o->UNITsetLastCallFnc('tobasket');
-        $this->assertEquals('tobasket', $o->UNITgetLastCallFnc());
+        $o->_setLastCallFnc('tobasket');
+        $this->assertEquals('tobasket', $o->_getLastCallFnc());
     }
 
     public function testExecuteUserChoiceToBasket()

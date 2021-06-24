@@ -146,7 +146,7 @@ class ArticleListTest extends \OxidTestCase
         $sQ = str_replace(" from $sTable where 1 ", " from $sTable left join $sO2CView on $sTable.oxid = $sO2CView.oxobjectid where $sO2CView.oxcatnid = 'testCategory' and  1  and $sTable.oxparentid = '' ", $sQ);
 
         $oView = oxNew('Article_List');
-        $this->assertEquals($sQ, $oView->UNITbuildSelectString($oProduct));
+        $this->assertEquals($sQ, $oView->_buildSelectString($oProduct));
     }
 
     /**
@@ -163,7 +163,7 @@ class ArticleListTest extends \OxidTestCase
         $sQ = $oProduct->buildSelectString(null);
 
         $oView = oxNew('Article_List');
-        $this->assertEquals($sQ . " and $sTable.oxparentid = ''  and $sTable.oxmanufacturerid = 'testManufacturer'", $oView->UNITbuildSelectString($oProduct));
+        $this->assertEquals($sQ . " and $sTable.oxparentid = ''  and $sTable.oxmanufacturerid = 'testManufacturer'", $oView->_buildSelectString($oProduct));
     }
 
     /**
@@ -180,7 +180,7 @@ class ArticleListTest extends \OxidTestCase
         $sQ = $oProduct->buildSelectString(null);
 
         $oView = oxNew('Article_List');
-        $this->assertEquals($sQ . " and $sTable.oxparentid = ''  and $sTable.oxvendorid = 'testVendor'", $oView->UNITbuildSelectString($oProduct));
+        $this->assertEquals($sQ . " and $sTable.oxparentid = ''  and $sTable.oxvendorid = 'testVendor'", $oView->_buildSelectString($oProduct));
     }
 
     /**
@@ -208,7 +208,7 @@ class ArticleListTest extends \OxidTestCase
         $sQ = $oProduct->buildSelectString(null);
 
         $oView = oxNew('Article_List');
-        $this->assertEquals($sQ . " and " . getViewName('oxarticles') . ".oxparentid = '' ", $oView->UNITbuildSelectString($oProduct));
+        $this->assertEquals($sQ . " and " . getViewName('oxarticles') . ".oxparentid = '' ", $oView->_buildSelectString($oProduct));
     }
 
     /**

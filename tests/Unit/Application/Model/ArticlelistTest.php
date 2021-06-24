@@ -145,7 +145,7 @@ final class ArticlelistTest extends \OxidTestCase
         $sExpQ .= "WHERE ( oa.oxattrid = " . $oDb->quote("'\"\"'") . " and oa.oxvalue = " . $oDb->quote("'\"\"'") . " )  GROUP BY oa.oxobjectid HAVING cnt = 1 ";
 
         $oArticleList = oxNew('oxArticleList');
-        $this->assertEquals($sExpQ, $oArticleList->UNITgetFilterIdsSql($sCatId, $aSessionFilter));
+        $this->assertEquals($sExpQ, $oArticleList->_getFilterIdsSql($sCatId, $aSessionFilter));
     }
 
     /**
@@ -442,7 +442,7 @@ final class ArticlelistTest extends \OxidTestCase
                   " . $oArticle->getSqlActiveSnippet() . " and $sArticleTable.oxparentid
                   = '' and oc.oxcatnid = 'testCat' ORDER BY  oc.oxpos,oc.oxobjectid";
 
-        $sRes = $oTest->UNITgetCategorySelect('oxid', 'testCat', null);
+        $sRes = $oTest->_getCategorySelect('oxid', 'testCat', null);
         $sExpt = str_replace(array("\n", "\r", " ", "\t"), "", $sExpt);
         $sRes = str_replace(array("\n", "\r", " ", "\t"), "", $sRes);
 
@@ -471,7 +471,7 @@ final class ArticlelistTest extends \OxidTestCase
                   " . $oArticle->getSqlActiveSnippet() . " and $sArticleTable.oxparentid = ''
                   and oc.oxcatnid = '$sCatId' and false ORDER BY  oc.oxpos,oc.oxobjectid";
 
-        $sRes = $oTest->UNITgetCategorySelect('oxid', $sCatId, array($sCatId => array('0' => array("8a142c3ee0edb75d4.80743302" => "Zeigar"))));
+        $sRes = $oTest->_getCategorySelect('oxid', $sCatId, array($sCatId => array('0' => array("8a142c3ee0edb75d4.80743302" => "Zeigar"))));
         $sExpt = str_replace(array("\n", "\r", " ", "\t"), "", $sExpt);
         $sRes = str_replace(array("\n", "\r", " ", "\t"), "", $sRes);
         $this->assertEquals($sExpt, $sRes);
@@ -498,7 +498,7 @@ final class ArticlelistTest extends \OxidTestCase
                   " . $oArticle->getSqlActiveSnippet() . " and $sArticleTable.oxparentid
                   = '' and oc.oxcatnid = 'testCat' ORDER BY oxtitle desc, oc.oxpos,oc.oxobjectid";
 
-        $sRes = $oTest->UNITgetCategorySelect('oxid', 'testCat', null);
+        $sRes = $oTest->_getCategorySelect('oxid', 'testCat', null);
         $sExpt = str_replace(array("\n", "\r", " ", "\t"), "", $sExpt);
         $sRes = str_replace(array("\n", "\r", " ", "\t"), "", $sRes);
 
@@ -519,7 +519,7 @@ final class ArticlelistTest extends \OxidTestCase
         $objectToCategoryView = getViewName('oxobject2category');
         $objectToAttributeView = getViewName('oxobject2attribute');
 
-        $result = $articleList->UNITgetFilterIdsSql($categoryId, array("8a142c3ee0edb75d4.80743302" => "Zeiger", "8a142c3e9cd961518.80299776" => "originell"));
+        $result = $articleList->_getFilterIdsSql($categoryId, array("8a142c3ee0edb75d4.80743302" => "Zeiger", "8a142c3e9cd961518.80299776" => "originell"));
 
         $this->setLanguage(0);
         modDB::getInstance()->cleanup();
@@ -685,7 +685,7 @@ final class ArticlelistTest extends \OxidTestCase
               )
             )
 EOT;
-        $actualSql = $articleList->UNITgetSearchSelect('test Search');
+        $actualSql = $articleList->_getSearchSelect('test Search');
 
         /**
          * Lowercase SQL and strip whitespaces from SQL to make comparison easier
@@ -704,7 +704,7 @@ EOT;
     public function testGetSearchSelectNoSelectString()
     {
         $oTest = $this->getProxyClass('oxArticleList');
-        $sRes = $oTest->UNITgetSearchSelect(null);
+        $sRes = $oTest->_getSearchSelect(null);
 
         $this->assertEquals('', $sRes);
     }
@@ -745,7 +745,7 @@ EOT;
               )
             )
 EOT;
-        $actualSql = $articleList->UNITgetSearchSelect('test Search');
+        $actualSql = $articleList->_getSearchSelect('test Search');
 
         /**
          * Lowercase SQL and strip whitespaces from SQL to make comparison easier
@@ -790,7 +790,7 @@ EOT;
               )
             )
 EOT;
-        $actualSql = $articleList->UNITgetSearchSelect('würfel');
+        $actualSql = $articleList->_getSearchSelect('würfel');
 
         /**
          * Lowercase SQL and strip whitespaces from SQL to make comparison easier
@@ -1001,7 +1001,7 @@ EOT;
         $oTest = $this->getProxyClass('oxArticleList');
         $sQ = "select * from oxarticles where oxid in('1354', '2000', 'not existant')";
         $aExpt = array("1354" => "1354", "2000" => "2000");
-        $aRes = $oTest->UNITcreateIdListFromSQL($sQ);
+        $aRes = $oTest->_createIdListFromSQL($sQ);
         $this->assertEquals($aExpt[1354], $oTest[1354]);
         $this->assertEquals($aExpt[2000], $oTest[2000]);
     }
@@ -1027,7 +1027,7 @@ EOT;
         $sExpt .= $oArticle->getSqlActiveSnippet() . "and$sArticleTable.oxissearch=1orderby";
         $sExpt .= "$sArticleTable.oxvarminpriceasc,$sArticleTable.oxid";
 
-        $sRes = $oTest->UNITgetPriceSelect($iPrice1, $iPrice2);
+        $sRes = $oTest->_getPriceSelect($iPrice1, $iPrice2);
         $sExpt = str_replace(array("\n", "\r", " "), "", $sExpt);
         $sRes = str_replace(array("\n", "\r", " "), "", $sRes);
         $this->assertEquals($sExpt, $sRes);
@@ -1056,7 +1056,7 @@ EOT;
         $sExpt .= "oxtitledesc,$sArticleTable.oxid";
 
 
-        $sRes = $oTest->UNITgetPriceSelect($iPrice1, $iPrice2);
+        $sRes = $oTest->_getPriceSelect($iPrice1, $iPrice2);
         $sExpt = str_replace(array("\n", "\r", " "), "", $sExpt);
         $sRes = str_replace(array("\n", "\r", " "), "", $sRes);
         $this->assertEquals($sExpt, $sRes);
@@ -1419,7 +1419,7 @@ EOT;
         //test over proxi
         $oTest = $this->getProxyClass('oxArticleList');
         $oTest->setNonPublicVar('_sCustomSorting', $sCustomSorting);
-        $sRes = $oTest->UNITgetVendorSelect('testVendor');
+        $sRes = $oTest->_getVendorSelect('testVendor');
         $this->assertEquals($sExpt, $sRes);
     }
 
@@ -1443,7 +1443,7 @@ EOT;
         //test over proxi
         $oTest = $this->getProxyClass('oxArticleList');
         $oTest->setNonPublicVar('_sCustomSorting', $sCustomSorting);
-        $sRes = $oTest->UNITgetManufacturerSelect('testManufacturer');
+        $sRes = $oTest->_getManufacturerSelect('testManufacturer');
         $this->assertEquals($sExpt, $sRes);
     }
 
@@ -1960,19 +1960,19 @@ EOT;
         // cases
         // 1. start time is not set
         $this->setConfigParam("iTimeToUpdatePrices", null);
-        $this->assertTrue($oList->UNITcanUpdatePrices());
+        $this->assertTrue($oList->_canUpdatePrices());
 
         // 2. start time > current time
         $this->setConfigParam("iTimeToUpdatePrices", $iCurrTime + 3600 * 24);
-        $this->assertFalse($oList->UNITcanUpdatePrices());
+        $this->assertFalse($oList->_canUpdatePrices());
 
         // 3. start time < current time
         $this->setConfigParam("iTimeToUpdatePrices", $iCurrTime - 3600 * 24);
-        $this->assertTrue($oList->UNITcanUpdatePrices());
+        $this->assertTrue($oList->_canUpdatePrices());
 
         // 4. crontab is on
         $this->setConfigParam("blUseCron", true);
-        $this->assertFalse($oList->UNITcanUpdatePrices());
+        $this->assertFalse($oList->_canUpdatePrices());
     }
 
     /**
